@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@400;500&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -54,6 +56,13 @@
     --sidebar-border: 220 13% 91%;
 
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Bootstrap-specific colors */
+    --bootstrap-primary: 213 79% 53%;
+    --bootstrap-text-primary: 212 15% 16%;
+    --bootstrap-text-muted: 210 13% 50%;
+    --bootstrap-border: 210 17% 82%;
+    --bootstrap-bg-gray: 210 17% 95%;
   }
 
   .dark {
