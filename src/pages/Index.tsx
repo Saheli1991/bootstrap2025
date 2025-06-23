@@ -1,15 +1,74 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { Eye, EyeOff } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
+import { Eye, EyeOff, Loader2, AlertCircle } from "lucide-react";
+
+const loginSchema = z.object({
+  email: z
+    .string()
+    .min(1, "Username is required")
+    .refine((val) => val.trim().length > 0, "Username cannot be empty"),
+  password: z
+    .string()
+    .min(1, "Password is required")
+    .min(3, "Password must be at least 3 characters"),
+  rememberMe: z.boolean().default(false),
+});
+
+type LoginFormData = z.infer<typeof loginSchema>;
 
 const Index = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
+  const [authError, setAuthError] = useState<string>("");
+  const navigate = useNavigate();
+  const { login, isLoading, isAuthenticated } = useAuth();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    setValue,
+    watch,
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+      rememberMe: false,
+    },
+  });
+
+  const rememberMe = watch("rememberMe");
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/dashboard");
+    }
+  }, [isAuthenticated, navigate]);
+
+  const onSubmit = async (data: LoginFormData) => {
+    setAuthError("");
+
+    try {
+      const result = await login(data.email, data.password);
+
+      if (result.success) {
+        navigate("/dashboard");
+      } else {
+        setAuthError(result.error || "Login failed. Please try again.");
+      }
+    } catch (error) {
+      setAuthError("An unexpected error occurred. Please try again.");
+    }
+  };
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-white font-helvetica px-4 py-24 sm:py-32">
@@ -112,23 +171,50 @@ const Index = () => {
 
         {/* Form Section */}
         <div className="flex flex-col gap-2 w-full">
-          <form className="flex flex-col w-full">
+          {/* Auth Error Message */}
+          {authError && (
+            <div className="flex items-center gap-2 p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md mb-4">
+              <AlertCircle className="w-4 h-4 flex-shrink-0" />
+              <span>{authError}</span>
+            </div>
+          )}
+
+          {/* Demo Credentials Info */}
+          <div className="flex items-center gap-2 p-3 text-sm text-blue-600 bg-blue-50 border border-blue-200 rounded-md mb-4">
+            <AlertCircle className="w-4 h-4 flex-shrink-0" />
+            <span>
+              <strong>Demo:</strong> Use "saheli" for both username and password
+            </span>
+          </div>
+
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col w-full"
+          >
             {/* Email Field */}
             <div className="flex flex-col pb-4 w-full">
               <div className="flex pb-2 items-end gap-1 w-full">
                 <Label className="text-bootstrap-text-primary text-base font-normal leading-[150%]">
-                  Email
+                  Username
                 </Label>
               </div>
               <div className="flex items-center w-full rounded-[4px]">
                 <Input
-                  type="email"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="flex px-3 py-[6px] items-center flex-1 rounded-[4px] border border-bootstrap-border bg-white text-base font-normal leading-[150%] placeholder:text-bootstrap-text-muted focus-visible:ring-1 focus-visible:ring-bootstrap-primary focus-visible:ring-offset-0 h-auto"
+                  {...register("email")}
+                  type="text"
+                  placeholder="Enter your username"
+                  className={`flex px-3 py-[6px] items-center flex-1 rounded-[4px] border bg-white text-base font-normal leading-[150%] placeholder:text-bootstrap-text-muted focus-visible:ring-1 focus-visible:ring-bootstrap-primary focus-visible:ring-offset-0 h-auto ${
+                    errors.email
+                      ? "border-red-500 focus-visible:ring-red-500"
+                      : "border-bootstrap-border"
+                  }`}
                 />
               </div>
+              {errors.email && (
+                <span className="text-sm text-red-500 mt-1">
+                  {errors.email.message}
+                </span>
+              )}
             </div>
 
             {/* Password Field */}
@@ -141,16 +227,19 @@ const Index = () => {
               <div className="flex items-center w-full rounded-[4px]">
                 <div className="relative flex items-center w-full rounded-[4px]">
                   <Input
+                    {...register("password")}
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="flex px-3 py-[6px] items-center flex-1 rounded-[4px] border border-bootstrap-border bg-white text-base font-normal leading-[150%] placeholder:text-bootstrap-text-muted focus-visible:ring-1 focus-visible:ring-bootstrap-primary focus-visible:ring-offset-0 h-auto pr-10"
+                    className={`flex px-3 py-[6px] items-center flex-1 rounded-[4px] border bg-white text-base font-normal leading-[150%] placeholder:text-bootstrap-text-muted focus-visible:ring-1 focus-visible:ring-bootstrap-primary focus-visible:ring-offset-0 h-auto pr-10 ${
+                      errors.password
+                        ? "border-red-500 focus-visible:ring-red-500"
+                        : "border-bootstrap-border"
+                    }`}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 flex items-center justify-center p-[1px]"
+                    className="absolute right-3 flex items-center justify-center p-[1px] hover:bg-gray-100 rounded transition-colors"
                   >
                     {showPassword ? (
                       <Eye className="w-[14px] h-[11px] text-bootstrap-text-muted" />
@@ -160,6 +249,11 @@ const Index = () => {
                   </button>
                 </div>
               </div>
+              {errors.password && (
+                <span className="text-sm text-red-500 mt-1">
+                  {errors.password.message}
+                </span>
+              )}
             </div>
 
             {/* Remember me & Forgot password row */}
@@ -170,7 +264,7 @@ const Index = () => {
                     id="remember"
                     checked={rememberMe}
                     onCheckedChange={(checked) =>
-                      setRememberMe(checked as boolean)
+                      setValue("rememberMe", checked as boolean)
                     }
                     className="w-4 h-4 rounded-[4px] border border-[#dee2e6] bg-white data-[state=checked]:bg-bootstrap-primary data-[state=checked]:border-bootstrap-primary"
                   />
@@ -195,16 +289,25 @@ const Index = () => {
               {/* Sign in button */}
               <Button
                 type="submit"
-                className="flex px-3 py-[6px] justify-center items-center gap-2 w-full rounded-[6px] border border-bootstrap-primary bg-bootstrap-primary text-white text-base font-normal leading-[150%] hover:bg-bootstrap-primary/90 h-auto"
+                disabled={isSubmitting || isLoading}
+                className="flex px-3 py-[6px] justify-center items-center gap-2 w-full rounded-[6px] border border-bootstrap-primary bg-bootstrap-primary text-white text-base font-normal leading-[150%] hover:bg-bootstrap-primary/90 h-auto disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Sign in
+                {isSubmitting || isLoading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Signing in...
+                  </>
+                ) : (
+                  "Sign in"
+                )}
               </Button>
 
               {/* Sign in with Google button */}
               <Button
                 type="button"
                 variant="outline"
-                className="flex px-[13px] py-[7px] justify-center items-center gap-2 w-full rounded-[4px] border border-bootstrap-primary bg-transparent text-bootstrap-primary text-base font-normal leading-[150%] hover:bg-bootstrap-primary/5 h-auto"
+                disabled={isSubmitting || isLoading}
+                className="flex px-[13px] py-[7px] justify-center items-center gap-2 w-full rounded-[4px] border border-bootstrap-primary bg-transparent text-bootstrap-primary text-base font-normal leading-[150%] hover:bg-bootstrap-primary/5 h-auto disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <svg
                   width="16"
