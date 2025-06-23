@@ -18,7 +18,24 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        helvetica: [
+          "Helvetica Neue",
+          "Helvetica",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "Roboto",
+          "sans-serif",
+        ],
+      },
       colors: {
+        bootstrap: {
+          primary: "hsl(var(--bootstrap-primary))",
+          "text-primary": "hsl(var(--bootstrap-text-primary))",
+          "text-muted": "hsl(var(--bootstrap-text-muted))",
+          border: "hsl(var(--bootstrap-border))",
+          "bg-gray": "hsl(var(--bootstrap-bg-gray))",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
