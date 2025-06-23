@@ -159,7 +159,9 @@ const Dashboard = () => {
                 </defs>
               </svg>
             </div>
-            <h1 className="text-xl font-semibold text-gray-900">Dashboard</h1>
+            <h1 className="text-xl font-semibold text-gray-900">
+              Office Admin
+            </h1>
           </div>
 
           {/* Search and Actions */}

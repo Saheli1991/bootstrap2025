@@ -179,14 +179,6 @@ const Index = () => {
             </div>
           )}
 
-          {/* Demo Credentials Info */}
-          <div className="flex items-center gap-2 p-3 text-sm text-blue-600 bg-blue-50 border border-blue-200 rounded-md mb-4">
-            <AlertCircle className="w-4 h-4 flex-shrink-0" />
-            <span>
-              <strong>Demo:</strong> Use "saheli" for both username and password
-            </span>
-          </div>
-
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col w-full"
