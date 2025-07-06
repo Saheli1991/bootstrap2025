@@ -34,9 +34,9 @@ const containerVariants = {
     transition: {
       duration: 0.6,
       ease: "easeOut",
-      staggerChildren: 0.1,
-    },
-  },
+      staggerChildren: 0.1
+    }
+  }
 };
 
 const itemVariants = {
@@ -44,8 +44,8 @@ const itemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, ease: "easeOut" },
-  },
+    transition: { duration: 0.5, ease: "easeOut" }
+  }
 };
 
 const logoVariants = {
@@ -58,9 +58,9 @@ const logoVariants = {
       duration: 0.8,
       ease: "easeOut",
       type: "spring",
-      stiffness: 100,
-    },
-  },
+      stiffness: 100
+    }
+  }
 };
 
 const formVariants = {
@@ -72,9 +72,9 @@ const formVariants = {
       duration: 0.6,
       ease: "easeOut",
       staggerChildren: 0.1,
-      delayChildren: 0.2,
-    },
-  },
+      delayChildren: 0.2
+    }
+  }
 };
 
 const Index = () => {
@@ -245,14 +245,25 @@ const Index = () => {
         </motion.div>
 
         {/* Form Section */}
-        <div className="flex flex-col gap-2 w-full">
+        <motion.div
+          className="flex flex-col gap-2 w-full"
+          variants={formVariants}
+        >
           {/* Auth Error Message */}
-          {authError && (
-            <div className="flex items-center gap-2 p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md mb-4">
-              <AlertCircle className="w-4 h-4 flex-shrink-0" />
-              <span>{authError}</span>
-            </div>
-          )}
+          <AnimatePresence>
+            {authError && (
+              <motion.div
+                className="flex items-center gap-2 p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md mb-4"
+                initial={{ opacity: 0, y: -10, height: 0 }}
+                animate={{ opacity: 1, y: 0, height: "auto" }}
+                exit={{ opacity: 0, y: -10, height: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                <span>{authError}</span>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           <form
             onSubmit={handleSubmit(onSubmit)}
