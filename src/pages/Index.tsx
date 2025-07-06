@@ -326,17 +326,26 @@ const Index = () => {
                         : "border-bootstrap-border"
                     }`}
                   />
-                  <button
+                  <motion.button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 flex items-center justify-center p-[1px] hover:bg-gray-100 rounded transition-colors"
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
                   >
-                    {showPassword ? (
-                      <Eye className="w-[14px] h-[11px] text-bootstrap-text-muted" />
-                    ) : (
-                      <EyeOff className="w-[14px] h-[11px] text-bootstrap-text-muted" />
-                    )}
-                  </button>
+                    <motion.div
+                      key={showPassword ? "visible" : "hidden"}
+                      initial={{ opacity: 0, rotate: -90 }}
+                      animate={{ opacity: 1, rotate: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      {showPassword ? (
+                        <Eye className="w-[14px] h-[11px] text-bootstrap-text-muted" />
+                      ) : (
+                        <EyeOff className="w-[14px] h-[11px] text-bootstrap-text-muted" />
+                      )}
+                    </motion.div>
+                  </motion.button>
                 </div>
               </div>
               {errors.password && (
