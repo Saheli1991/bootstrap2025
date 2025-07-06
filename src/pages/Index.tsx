@@ -390,11 +390,15 @@ const Index = () => {
               variants={itemVariants}
             >
               {/* Sign in button */}
-              <Button
-                type="submit"
-                disabled={isSubmitting || isLoading}
-                className="flex px-3 py-[6px] justify-center items-center gap-2 w-full rounded-[6px] border border-bootstrap-primary bg-bootstrap-primary text-white text-base font-normal leading-[150%] hover:bg-bootstrap-primary/90 h-auto disabled:opacity-50 disabled:cursor-not-allowed"
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
+                <Button
+                  type="submit"
+                  disabled={isSubmitting || isLoading}
+                  className="flex px-3 py-[6px] justify-center items-center gap-2 w-full rounded-[6px] border border-bootstrap-primary bg-bootstrap-primary text-white text-base font-normal leading-[150%] hover:bg-bootstrap-primary/90 h-auto disabled:opacity-50 disabled:cursor-not-allowed"
+                >
                 {isSubmitting || isLoading ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin" />
