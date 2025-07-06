@@ -222,7 +222,7 @@ const Index = () => {
                 </filter>
               </defs>
             </svg>
-          </div>
+          </motion.div>
 
           {/* Heading */}
           <div className="flex flex-col items-center gap-3 w-full">
