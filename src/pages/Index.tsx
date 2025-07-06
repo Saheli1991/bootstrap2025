@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { motion, AnimatePresence } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -23,6 +24,58 @@ const loginSchema = z.object({
 });
 
 type LoginFormData = z.infer<typeof loginSchema>;
+
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: "easeOut",
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: "easeOut" },
+  },
+};
+
+const logoVariants = {
+  hidden: { opacity: 0, scale: 0.8, rotate: -10 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    rotate: 0,
+    transition: {
+      duration: 0.8,
+      ease: "easeOut",
+      type: "spring",
+      stiffness: 100,
+    },
+  },
+};
+
+const formVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: "easeOut",
+      staggerChildren: 0.1,
+      delayChildren: 0.2,
+    },
+  },
+};
 
 const Index = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -72,11 +125,24 @@ const Index = () => {
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-white font-helvetica px-4 py-24 sm:py-32">
-      <div className="w-full max-w-[360px] flex flex-col gap-8">
+      <motion.div
+        className="w-full max-w-[360px] flex flex-col gap-8"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
         {/* Header Section */}
-        <div className="flex flex-col items-center gap-6">
+        <motion.div
+          className="flex flex-col items-center gap-6"
+          variants={itemVariants}
+        >
           {/* Bootstrap Logo */}
-          <div className="relative w-12 h-[38.25px]">
+          <motion.div
+            className="relative w-12 h-[38.25px]"
+            variants={logoVariants}
+            whileHover={{ scale: 1.05, rotate: 5 }}
+            whileTap={{ scale: 0.95 }}
+          >
             <svg
               width="48"
               height="39"
@@ -156,35 +222,59 @@ const Index = () => {
                 </filter>
               </defs>
             </svg>
-          </div>
+          </motion.div>
 
           {/* Heading */}
-          <div className="flex flex-col items-center gap-3 w-full">
-            <h1 className="text-bootstrap-text-primary text-[32px] font-medium leading-[120%] text-center">
+          <motion.div
+            className="flex flex-col items-center gap-3 w-full"
+            variants={itemVariants}
+          >
+            <motion.h1
+              className="text-bootstrap-text-primary text-[32px] font-medium leading-[120%] text-center"
+              variants={itemVariants}
+            >
               Log in to your account
-            </h1>
-            <p className="text-bootstrap-text-muted text-base font-normal leading-[150%] text-center">
+            </motion.h1>
+            <motion.p
+              className="text-bootstrap-text-muted text-base font-normal leading-[150%] text-center"
+              variants={itemVariants}
+            >
               Welcome back! Please enter your details.
-            </p>
-          </div>
-        </div>
+            </motion.p>
+          </motion.div>
+        </motion.div>
 
         {/* Form Section */}
-        <div className="flex flex-col gap-2 w-full">
+        <motion.div
+          className="flex flex-col gap-2 w-full"
+          variants={formVariants}
+        >
           {/* Auth Error Message */}
-          {authError && (
-            <div className="flex items-center gap-2 p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md mb-4">
-              <AlertCircle className="w-4 h-4 flex-shrink-0" />
-              <span>{authError}</span>
-            </div>
-          )}
+          <AnimatePresence>
+            {authError && (
+              <motion.div
+                className="flex items-center gap-2 p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md mb-4"
+                initial={{ opacity: 0, y: -10, height: 0 }}
+                animate={{ opacity: 1, y: 0, height: "auto" }}
+                exit={{ opacity: 0, y: -10, height: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                <span>{authError}</span>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-          <form
+          <motion.form
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col w-full"
+            variants={itemVariants}
           >
             {/* Email Field */}
-            <div className="flex flex-col pb-4 w-full">
+            <motion.div
+              className="flex flex-col pb-4 w-full"
+              variants={itemVariants}
+            >
               <div className="flex pb-2 items-end gap-1 w-full">
                 <Label className="text-bootstrap-text-primary text-base font-normal leading-[150%]">
                   Username
@@ -203,14 +293,22 @@ const Index = () => {
                 />
               </div>
               {errors.email && (
-                <span className="text-sm text-red-500 mt-1">
+                <motion.span
+                  className="text-sm text-red-500 mt-1"
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
                   {errors.email.message}
-                </span>
+                </motion.span>
               )}
-            </div>
+            </motion.div>
 
             {/* Password Field */}
-            <div className="flex flex-col pb-4 w-full">
+            <motion.div
+              className="flex flex-col pb-4 w-full"
+              variants={itemVariants}
+            >
               <div className="flex pb-2 items-end gap-1 w-full">
                 <Label className="text-bootstrap-text-primary text-base font-normal leading-[150%]">
                   Password
@@ -228,28 +326,45 @@ const Index = () => {
                         : "border-bootstrap-border"
                     }`}
                   />
-                  <button
+                  <motion.button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 flex items-center justify-center p-[1px] hover:bg-gray-100 rounded transition-colors"
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
                   >
-                    {showPassword ? (
-                      <Eye className="w-[14px] h-[11px] text-bootstrap-text-muted" />
-                    ) : (
-                      <EyeOff className="w-[14px] h-[11px] text-bootstrap-text-muted" />
-                    )}
-                  </button>
+                    <motion.div
+                      key={showPassword ? "visible" : "hidden"}
+                      initial={{ opacity: 0, rotate: -90 }}
+                      animate={{ opacity: 1, rotate: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      {showPassword ? (
+                        <Eye className="w-[14px] h-[11px] text-bootstrap-text-muted" />
+                      ) : (
+                        <EyeOff className="w-[14px] h-[11px] text-bootstrap-text-muted" />
+                      )}
+                    </motion.div>
+                  </motion.button>
                 </div>
               </div>
               {errors.password && (
-                <span className="text-sm text-red-500 mt-1">
+                <motion.span
+                  className="text-sm text-red-500 mt-1"
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
                   {errors.password.message}
-                </span>
+                </motion.span>
               )}
-            </div>
+            </motion.div>
 
             {/* Remember me & Forgot password row */}
-            <div className="flex pb-2 justify-between items-center w-full">
+            <motion.div
+              className="flex pb-2 justify-between items-center w-full"
+              variants={itemVariants}
+            >
               <div className="flex items-start gap-2">
                 <div className="flex h-6 justify-center items-center">
                   <Checkbox
@@ -268,82 +383,102 @@ const Index = () => {
                   Remember me
                 </Label>
               </div>
-              <a
+              <motion.a
                 href="#"
                 className="text-bootstrap-primary text-base font-normal leading-[150%] underline cursor-pointer hover:no-underline"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
                 Forgot password
-              </a>
-            </div>
+              </motion.a>
+            </motion.div>
 
             {/* Actions Section */}
-            <div className="flex flex-col gap-4 w-full">
+            <motion.div
+              className="flex flex-col gap-4 w-full"
+              variants={itemVariants}
+            >
               {/* Sign in button */}
-              <Button
-                type="submit"
-                disabled={isSubmitting || isLoading}
-                className="flex px-3 py-[6px] justify-center items-center gap-2 w-full rounded-[6px] border border-bootstrap-primary bg-bootstrap-primary text-white text-base font-normal leading-[150%] hover:bg-bootstrap-primary/90 h-auto disabled:opacity-50 disabled:cursor-not-allowed"
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
-                {isSubmitting || isLoading ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    Signing in...
-                  </>
-                ) : (
-                  "Sign in"
-                )}
-              </Button>
+                <Button
+                  type="submit"
+                  disabled={isSubmitting || isLoading}
+                  className="flex px-3 py-[6px] justify-center items-center gap-2 w-full rounded-[6px] border border-bootstrap-primary bg-bootstrap-primary text-white text-base font-normal leading-[150%] hover:bg-bootstrap-primary/90 h-auto disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting || isLoading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Signing in...
+                    </>
+                  ) : (
+                    "Sign in"
+                  )}
+                </Button>
+              </motion.div>
 
               {/* Sign in with Google button */}
-              <Button
-                type="button"
-                variant="outline"
-                disabled={isSubmitting || isLoading}
-                className="flex px-[13px] py-[7px] justify-center items-center gap-2 w-full rounded-[4px] border border-bootstrap-primary bg-transparent text-bootstrap-primary text-base font-normal leading-[150%] hover:bg-bootstrap-primary/5 h-auto disabled:opacity-50 disabled:cursor-not-allowed"
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  className="text-bootstrap-primary"
+                <Button
+                  type="button"
+                  variant="outline"
+                  disabled={isSubmitting || isLoading}
+                  className="flex px-[13px] py-[7px] justify-center items-center gap-2 w-full rounded-[4px] border border-bootstrap-primary bg-transparent text-bootstrap-primary text-base font-normal leading-[150%] hover:bg-bootstrap-primary/5 h-auto disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <path
-                    d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                    fill="currentColor"
-                  />
-                  <path
-                    d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                    fill="currentColor"
-                  />
-                  <path
-                    d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-                    fill="currentColor"
-                  />
-                  <path
-                    d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-                    fill="currentColor"
-                  />
-                </svg>
-                Sign in with Google
-              </Button>
-            </div>
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    className="text-bootstrap-primary"
+                  >
+                    <path
+                      d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                      fill="currentColor"
+                    />
+                    <path
+                      d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                      fill="currentColor"
+                    />
+                    <path
+                      d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                      fill="currentColor"
+                    />
+                    <path
+                      d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                  Sign in with Google
+                </Button>
+              </motion.div>
+            </motion.div>
 
             {/* Sign up link */}
-            <div className="flex justify-center items-center gap-1 w-full pt-4">
+            <motion.div
+              className="flex justify-center items-center gap-1 w-full pt-4"
+              variants={itemVariants}
+            >
               <span className="text-bootstrap-text-muted text-base font-normal leading-[150%]">
                 Don't have an account?
               </span>
-              <a
+              <motion.a
                 href="#"
                 className="text-bootstrap-primary text-base font-normal leading-[150%] underline cursor-pointer hover:no-underline"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
                 Sign up
-              </a>
-            </div>
-          </form>
-        </div>
-      </div>
+              </motion.a>
+            </motion.div>
+          </motion.form>
+        </motion.div>
+      </motion.div>
     </div>
   );
 };
