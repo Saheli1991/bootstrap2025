@@ -34,9 +34,9 @@ const containerVariants = {
     transition: {
       duration: 0.6,
       ease: "easeOut",
-      staggerChildren: 0.1
-    }
-  }
+      staggerChildren: 0.1,
+    },
+  },
 };
 
 const itemVariants = {
@@ -44,8 +44,8 @@ const itemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, ease: "easeOut" }
-  }
+    transition: { duration: 0.5, ease: "easeOut" },
+  },
 };
 
 const logoVariants = {
@@ -58,9 +58,9 @@ const logoVariants = {
       duration: 0.8,
       ease: "easeOut",
       type: "spring",
-      stiffness: 100
-    }
-  }
+      stiffness: 100,
+    },
+  },
 };
 
 const formVariants = {
@@ -72,9 +72,9 @@ const formVariants = {
       duration: 0.6,
       ease: "easeOut",
       staggerChildren: 0.1,
-      delayChildren: 0.2
-    }
-  }
+      delayChildren: 0.2,
+    },
+  },
 };
 
 const Index = () => {
@@ -225,15 +225,24 @@ const Index = () => {
           </motion.div>
 
           {/* Heading */}
-          <div className="flex flex-col items-center gap-3 w-full">
-            <h1 className="text-bootstrap-text-primary text-[32px] font-medium leading-[120%] text-center">
+          <motion.div
+            className="flex flex-col items-center gap-3 w-full"
+            variants={itemVariants}
+          >
+            <motion.h1
+              className="text-bootstrap-text-primary text-[32px] font-medium leading-[120%] text-center"
+              variants={itemVariants}
+            >
               Log in to your account
-            </h1>
-            <p className="text-bootstrap-text-muted text-base font-normal leading-[150%] text-center">
+            </motion.h1>
+            <motion.p
+              className="text-bootstrap-text-muted text-base font-normal leading-[150%] text-center"
+              variants={itemVariants}
+            >
               Welcome back! Please enter your details.
-            </p>
-          </div>
-        </div>
+            </motion.p>
+          </motion.div>
+        </motion.div>
 
         {/* Form Section */}
         <div className="flex flex-col gap-2 w-full">
