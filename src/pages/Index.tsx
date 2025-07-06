@@ -34,9 +34,9 @@ const containerVariants = {
     transition: {
       duration: 0.6,
       ease: "easeOut",
-      staggerChildren: 0.1,
-    },
-  },
+      staggerChildren: 0.1
+    }
+  }
 };
 
 const itemVariants = {
@@ -44,8 +44,8 @@ const itemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, ease: "easeOut" },
-  },
+    transition: { duration: 0.5, ease: "easeOut" }
+  }
 };
 
 const logoVariants = {
@@ -58,9 +58,9 @@ const logoVariants = {
       duration: 0.8,
       ease: "easeOut",
       type: "spring",
-      stiffness: 100,
-    },
-  },
+      stiffness: 100
+    }
+  }
 };
 
 const formVariants = {
@@ -72,9 +72,9 @@ const formVariants = {
       duration: 0.6,
       ease: "easeOut",
       staggerChildren: 0.1,
-      delayChildren: 0.2,
-    },
-  },
+      delayChildren: 0.2
+    }
+  }
 };
 
 const Index = () => {
@@ -125,7 +125,12 @@ const Index = () => {
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-white font-helvetica px-4 py-24 sm:py-32">
-      <div className="w-full max-w-[360px] flex flex-col gap-8">
+      <motion.div
+        className="w-full max-w-[360px] flex flex-col gap-8"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
         {/* Header Section */}
         <div className="flex flex-col items-center gap-6">
           {/* Bootstrap Logo */}
