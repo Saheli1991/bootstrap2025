@@ -407,15 +407,20 @@ const Index = () => {
                 ) : (
                   "Sign in"
                 )}
-              </Button>
+                </Button>
+              </motion.div>
 
               {/* Sign in with Google button */}
-              <Button
-                type="button"
-                variant="outline"
-                disabled={isSubmitting || isLoading}
-                className="flex px-[13px] py-[7px] justify-center items-center gap-2 w-full rounded-[4px] border border-bootstrap-primary bg-transparent text-bootstrap-primary text-base font-normal leading-[150%] hover:bg-bootstrap-primary/5 h-auto disabled:opacity-50 disabled:cursor-not-allowed"
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
+                <Button
+                  type="button"
+                  variant="outline"
+                  disabled={isSubmitting || isLoading}
+                  className="flex px-[13px] py-[7px] justify-center items-center gap-2 w-full rounded-[4px] border border-bootstrap-primary bg-transparent text-bootstrap-primary text-base font-normal leading-[150%] hover:bg-bootstrap-primary/5 h-auto disabled:opacity-50 disabled:cursor-not-allowed"
+                >
                 <svg
                   width="16"
                   height="16"
