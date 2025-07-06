@@ -451,17 +451,22 @@ const Index = () => {
             </motion.div>
 
             {/* Sign up link */}
-            <div className="flex justify-center items-center gap-1 w-full pt-4">
+            <motion.div
+              className="flex justify-center items-center gap-1 w-full pt-4"
+              variants={itemVariants}
+            >
               <span className="text-bootstrap-text-muted text-base font-normal leading-[150%]">
                 Don't have an account?
               </span>
-              <a
+              <motion.a
                 href="#"
                 className="text-bootstrap-primary text-base font-normal leading-[150%] underline cursor-pointer hover:no-underline"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
                 Sign up
-              </a>
-            </div>
+              </motion.a>
+            </motion.div>
           </motion.form>
         </motion.div>
       </motion.div>
