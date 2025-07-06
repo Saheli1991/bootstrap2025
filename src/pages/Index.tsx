@@ -34,9 +34,9 @@ const containerVariants = {
     transition: {
       duration: 0.6,
       ease: "easeOut",
-      staggerChildren: 0.1,
-    },
-  },
+      staggerChildren: 0.1
+    }
+  }
 };
 
 const itemVariants = {
@@ -44,8 +44,8 @@ const itemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, ease: "easeOut" },
-  },
+    transition: { duration: 0.5, ease: "easeOut" }
+  }
 };
 
 const logoVariants = {
@@ -58,9 +58,9 @@ const logoVariants = {
       duration: 0.8,
       ease: "easeOut",
       type: "spring",
-      stiffness: 100,
-    },
-  },
+      stiffness: 100
+    }
+  }
 };
 
 const formVariants = {
@@ -72,9 +72,9 @@ const formVariants = {
       duration: 0.6,
       ease: "easeOut",
       staggerChildren: 0.1,
-      delayChildren: 0.2,
-    },
-  },
+      delayChildren: 0.2
+    }
+  }
 };
 
 const Index = () => {
@@ -352,7 +352,10 @@ const Index = () => {
             </motion.div>
 
             {/* Remember me & Forgot password row */}
-            <div className="flex pb-2 justify-between items-center w-full">
+            <motion.div
+              className="flex pb-2 justify-between items-center w-full"
+              variants={itemVariants}
+            >
               <div className="flex items-start gap-2">
                 <div className="flex h-6 justify-center items-center">
                   <Checkbox
