@@ -34,9 +34,9 @@ const containerVariants = {
     transition: {
       duration: 0.6,
       ease: "easeOut",
-      staggerChildren: 0.1
-    }
-  }
+      staggerChildren: 0.1,
+    },
+  },
 };
 
 const itemVariants = {
@@ -44,8 +44,8 @@ const itemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, ease: "easeOut" }
-  }
+    transition: { duration: 0.5, ease: "easeOut" },
+  },
 };
 
 const logoVariants = {
@@ -58,9 +58,9 @@ const logoVariants = {
       duration: 0.8,
       ease: "easeOut",
       type: "spring",
-      stiffness: 100
-    }
-  }
+      stiffness: 100,
+    },
+  },
 };
 
 const formVariants = {
@@ -72,9 +72,9 @@ const formVariants = {
       duration: 0.6,
       ease: "easeOut",
       staggerChildren: 0.1,
-      delayChildren: 0.2
-    }
-  }
+      delayChildren: 0.2,
+    },
+  },
 };
 
 const Index = () => {
@@ -293,11 +293,16 @@ const Index = () => {
                 />
               </div>
               {errors.email && (
-                <span className="text-sm text-red-500 mt-1">
+                <motion.span
+                  className="text-sm text-red-500 mt-1"
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
                   {errors.email.message}
-                </span>
+                </motion.span>
               )}
-            </div>
+            </motion.div>
 
             {/* Password Field */}
             <div className="flex flex-col pb-4 w-full">
