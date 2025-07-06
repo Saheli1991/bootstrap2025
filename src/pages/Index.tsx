@@ -34,9 +34,9 @@ const containerVariants = {
     transition: {
       duration: 0.6,
       ease: "easeOut",
-      staggerChildren: 0.1,
-    },
-  },
+      staggerChildren: 0.1
+    }
+  }
 };
 
 const itemVariants = {
@@ -44,8 +44,8 @@ const itemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, ease: "easeOut" },
-  },
+    transition: { duration: 0.5, ease: "easeOut" }
+  }
 };
 
 const logoVariants = {
@@ -58,9 +58,9 @@ const logoVariants = {
       duration: 0.8,
       ease: "easeOut",
       type: "spring",
-      stiffness: 100,
-    },
-  },
+      stiffness: 100
+    }
+  }
 };
 
 const formVariants = {
@@ -72,9 +72,9 @@ const formVariants = {
       duration: 0.6,
       ease: "easeOut",
       staggerChildren: 0.1,
-      delayChildren: 0.2,
-    },
-  },
+      delayChildren: 0.2
+    }
+  }
 };
 
 const Index = () => {
@@ -132,9 +132,17 @@ const Index = () => {
         animate="visible"
       >
         {/* Header Section */}
-        <div className="flex flex-col items-center gap-6">
+        <motion.div
+          className="flex flex-col items-center gap-6"
+          variants={itemVariants}
+        >
           {/* Bootstrap Logo */}
-          <div className="relative w-12 h-[38.25px]">
+          <motion.div
+            className="relative w-12 h-[38.25px]"
+            variants={logoVariants}
+            whileHover={{ scale: 1.05, rotate: 5 }}
+            whileTap={{ scale: 0.95 }}
+          >
             <svg
               width="48"
               height="39"
